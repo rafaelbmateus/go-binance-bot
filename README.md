@@ -6,18 +6,6 @@ Put the buy or sell price and let the bot work for you.
 Simple like:
 > Buy when it's cheap or sell when it's expensive.
 
-## Setup Environment
-
-Create a env file in root folder with your
-[binance api key](https://www.binance.com/en/support/faq/360002502072)
-like this:
-
-```bash
-BINANCE_API_KEY=<YOUR_API_KEY_HERE>
-BINANCE_API_SECRET=<YOUR_API_SECRET_HERE>
-SLACK_WEBHOOK_URL=<YOUR_SLACK_WEBHOOK_URL_HERE>
-```
-
 ## Bot Config
 
 The bot configuration is provided by yaml file that
@@ -42,10 +30,47 @@ trades:
 * buyPrice: Create a buy order when the price is below. Format: `float64`
 * sellPrice: Create a sell order when the price is high. Format: `float64`
 
-## How to use?
+# How to run?
 
-To up the containers run this make command:
+To run the bot on your computer, you need to have docker and compose installed.
 
-```bash
-make up
+First, create a `.env` file in root folder with your
+[binance api key](https://www.binance.com/en/support/faq/360002502072)
+like this:
+
+```console
+BINANCE_API_KEY=<YOUR_API_KEY_HERE>
+BINANCE_API_SECRET=<YOUR_API_SECRET_HERE>
+SLACK_WEBHOOK_URL=<YOUR_SLACK_WEBHOOK_URL_HERE>
+```
+
+See the project structure to know where to put the `.env` file with your keys:
+
+```console
+├── binance/
+├── bot/
+├── build/
+├── config/
+├── notify/
+├── .env  <-----  # put your env file here!
+├── config.yaml
+├── go.mod
+├── go.sum
+├── main.go
+├── Makefile
+└── README.md
+```
+
+Finally to run the project, run:
+
+```console
+make up logs
+
+...
+app_1  | {"level":"info","time":"2022-03-28T13:19:31Z","message":"bot is running"}
+app_1  | {"level":"debug","time":"2022-03-28T13:19:31Z","message":"monitor {BTC/USDT 1m0s 44630 44640}"}
+app_1  | {"level":"debug","time":"2022-03-28T13:19:31Z","message":"monitor {LOKA/USDT 1m0s 2.295 2.34}"}
+app_1  | {"level":"debug","time":"2022-03-28T13:19:35Z","message":"current price of BTC/USDT is 47282"}
+app_1  | {"level":"debug","time":"2022-03-28T13:19:35Z","message":"time to SELL price 47282"}
+...
 ```
