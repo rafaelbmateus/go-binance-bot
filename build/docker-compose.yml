@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: ../
+      dockerfile: build/Dockerfile
+    restart: on-failure
+    env_file:
+      - ./../.env
+    environment:
+      CGO_ENABLED: "0"
+      GOOS: "linux"
+    command: go run main.go

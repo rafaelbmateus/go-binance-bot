@@ -1,0 +1,12 @@
+name: "Binance Bot"
+slackWebhook: "https://hooks.slack.com/services/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"
+
+trades:
+  - symbol: "BTC/USDT"
+    interval: "1m"
+    buyPrice: 44630.0
+    sellPrice: 44640.0
+  - symbol: "LOKA/USDT"
+    interval: "1m"
+    buyPrice: 2.295
+    sellPrice: 2.34
