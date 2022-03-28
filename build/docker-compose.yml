@@ -2,6 +2,7 @@ version: "3.9"
 
 services:
   app:
+    container_name: go-binance-bot
     build:
       context: ../
       dockerfile: build/Dockerfile

@@ -60,34 +60,41 @@ func (me *Bot) Monitor(trade config.Trade) error {
 	me.Log.Debug().Msgf("monitor %v", trade)
 
 	currentPrice, err := me.Binance.SymbolPrice(trade.GetSymbol(), trade.BuyWith(), "1m")
-	me.Log.Debug().Msgf("current price of %s is %v", trade.Symbol, currentPrice)
 	if err != nil {
 		return err
 	}
 
 	if currentPrice < trade.BuyPrice {
-		err := me.trade("BUY", trade, currentPrice)
+		me.Log.Debug().Msgf("time to buy! price of %s is %v buyPrice=%f",
+			trade.Symbol, currentPrice, trade.BuyPrice)
+		err := me.trade("BUY", trade.BuyWith(), trade.GetSymbol(), trade, currentPrice)
 		if err != nil {
 			return err
 		}
+
+		return nil
 	}
 
 	if currentPrice > trade.SellPrice {
-		err := me.trade("SELL", trade, currentPrice)
+		me.Log.Debug().Msgf("time to sell! price of %s is %v sellPrice=%f",
+			trade.Symbol, currentPrice, trade.SellPrice)
+		err := me.trade("SELL", trade.GetSymbol(), trade.BuyWith(), trade, currentPrice)
 		if err != nil {
 			return err
 		}
+
+		return nil
 	}
 
-	me.Log.Debug().Msgf("nothing to do %v", trade)
-
+	me.Log.Debug().Msgf("price of %s is %v buyPrice=%f sellPrice=%f",
+		trade.Symbol, currentPrice, trade.BuyPrice, trade.SellPrice)
 	return nil
 }
 
 // trade create an order to buy or sell.
-func (me *Bot) trade(side string, trade config.Trade, price float64) error {
-	me.Log.Debug().Msgf("time to %s price %v", side, price)
-	wallet, err := me.Binance.SymbolBalance(trade.GetSymbol())
+func (me *Bot) trade(side string, symbol string, buyWith string,
+	trade config.Trade, price float64) error {
+	wallet, err := me.Binance.SymbolBalance(symbol)
 	if err != nil {
 		return err
 	}
@@ -97,7 +104,7 @@ func (me *Bot) trade(side string, trade config.Trade, price float64) error {
 	}
 
 	me.Log.Debug().Msgf("available to %s in wallet %f", side, wallet)
-	order, err := me.Binance.CreateOrder(trade.GetSymbol(), trade.BuyWith(),
+	order, err := me.Binance.CreateOrder(symbol, buyWith,
 		side, wallet, trade.SellPrice)
 
 	if err != nil {

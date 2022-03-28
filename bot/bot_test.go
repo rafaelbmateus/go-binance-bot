@@ -19,9 +19,9 @@ var (
 	apiKey    = os.Getenv("BINANCE_API_KEY")
 	apiSecret = os.Getenv("BINANCE_API_SECRET")
 	trade     = config.Trade{
-		Symbol:    "BTC/USDT",
-		BuyPrice:  44580,
-		SellPrice: 44600,
+		Symbol:    "LOKA/USDT",
+		BuyPrice:  2.46,
+		SellPrice: 2.50,
 	}
 )
 
