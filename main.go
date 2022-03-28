@@ -30,8 +30,9 @@ func main() {
 
 	apiKey := os.Getenv("BINANCE_API_KEY")
 	apiSecret := os.Getenv("BINANCE_API_SECRET")
+	webhook := os.Getenv("SLACK_WEBHOOK_URL")
 	binance := binance.NewBinance(&log, &ctx, sdk.NewClient(apiKey, apiSecret))
-	notify := notify.NewSlackNotify(cfg.Name, cfg.SlackWebhookURL)
+	notify := notify.NewSlackNotify(cfg.Name, webhook)
 	bot := bot.NewBot(&log, &ctx, binance, cfg, notify)
 	bot.Run()
 

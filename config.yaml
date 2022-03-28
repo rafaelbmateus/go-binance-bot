@@ -1,5 +1,4 @@
 name: "Binance Bot"
-slackWebhook: "https://hooks.slack.com/services/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"
 
 trades:
   - symbol: "BTC/USDT"

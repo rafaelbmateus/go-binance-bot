@@ -8,9 +8,8 @@ import (
 )
 
 type Config struct {
-	Name            string  `yaml:"name"`
-	SlackWebhookURL string  `yaml:"slackWebhook"`
-	Trades          []Trade `yaml:"trades"`
+	Name   string  `yaml:"name"`
+	Trades []Trade `yaml:"trades"`
 }
 
 // Load configuration file.

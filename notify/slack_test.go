@@ -1,13 +1,14 @@
 package notify_test
 
 import (
+	"os"
 	"testing"
 
 	"github.com/rafaelbmateus/binance-bot/notify"
 	"github.com/stretchr/testify/assert"
 )
 
-var webhook = ""
+var webhook = os.Getenv("SLACK_WEBHOOK_URL")
 
 func TestSendMessage(t *testing.T) {
 	msg := notify.NewMessage("Hello!")

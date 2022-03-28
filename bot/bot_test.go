@@ -16,8 +16,8 @@ import (
 var (
 	log       = zerolog.New(os.Stdout).With().Timestamp().Logger()
 	ctx       = context.Background()
-	apiKey    = ""
-	apiSecret = ""
+	apiKey    = os.Getenv("BINANCE_API_KEY")
+	apiSecret = os.Getenv("BINANCE_API_SECRET")
 	trade     = config.Trade{
 		Symbol:    "BTC/USDT",
 		BuyPrice:  44580,
