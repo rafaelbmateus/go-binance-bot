@@ -1,5 +1,4 @@
 name: "Binance Bot"
-
 trades:
   - symbol: "BTC/USDT"
     interval: "1m"

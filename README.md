@@ -13,8 +13,9 @@ Create a env file in root folder with your
 like this:
 
 ```bash
-BINANCE_API_KEY=<YOU_API_KEY_HERE>
-BINANCE_API_SECRET=<YOU_API_SECRET_HERE>
+BINANCE_API_KEY=<YOUR_API_KEY_HERE>
+BINANCE_API_SECRET=<YOUR_API_SECRET_HERE>
+SLACK_WEBHOOK_URL=<YOUR_SLACK_WEBHOOK_URL_HERE>
 ```
 
 ## Bot Config
@@ -25,8 +26,6 @@ In this file, put the symbol price you want to buy and sell.
 
 ```yaml
 name: "Binance Bot"
-slackWebhook: "https://hooks.slack.com/services/8JHSA738/BASF2453/hauHduajHAdd83818"
-
 trades:
   - symbol: "BTC/USDT"
     interval: "1m"
