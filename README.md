@@ -37,6 +37,11 @@ trades:
     sellPrice: 2.34
 ```
 
+* symbol: Symbol name to trade. Format: `string`.
+* interval: Interval to the next trade. Format: `(time.Duration)`.
+* buyPrice: Create a buy order when the price is below. Format: `float64`
+* sellPrice: Create a sell order when the price is high. Format: `float64`
+
 ## How to use?
 
 To up the containers run this make command:
