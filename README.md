@@ -25,10 +25,10 @@ trades:
     sellPrice: 3.08
 ```
 
-* symbol: Symbol name to trade. Format: `string`.
-* interval: Interval to the next trade. Format: `(time.Duration)`.
-* buyPrice: Create a buy order when the price is below. Format: `float64`
-* sellPrice: Create a sell order when the price is high. Format: `float64`
+* symbol: Symbol name to trade - `string`
+* interval: Interval to the next trade - `time.Duration`
+* buyPrice: Create a buy order when the price is below - `float64`
+* sellPrice: Create a sell order when the price is high - `float64`
 
 # How to run?
 
@@ -61,7 +61,7 @@ See the project structure to know where to put the `.env` file with your keys:
 └── README.md
 ```
 
-Finally to run the project, run:
+Finally to run the project, exec:
 
 ```console
 make up logs
@@ -73,4 +73,10 @@ app_1  | {"level":"debug","time":"2022-03-28T13:19:31Z","message":"monitor {LOKA
 app_1  | {"level":"debug","time":"2022-03-28T13:19:35Z","message":"current price of BTC/USDT is 47282"}
 app_1  | {"level":"debug","time":"2022-03-28T13:19:35Z","message":"time to SELL price 47282"}
 ...
+```
+
+To stop the bot and remove container, exec:
+
+```console
+make clean
 ```
