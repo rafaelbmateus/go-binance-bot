@@ -13,16 +13,16 @@ has the following trade parameters.
 In this file, put the symbol price you want to buy and sell.
 
 ```yaml
-name: "Binance Bot"
+name: "My binance bot"
 trades:
   - symbol: "BTC/USDT"
     interval: "1m"
-    buyPrice: 44630.0
-    sellPrice: 44640.0
+    buyPrice: 34322.0
+    sellPrice: 50640.0
   - symbol: "LOKA/USDT"
-    interval: "1m"
-    buyPrice: 2.295
-    sellPrice: 2.34
+    interval: "30s"
+    buyPrice: 1.51
+    sellPrice: 3.08
 ```
 
 * symbol: Symbol name to trade. Format: `string`.
