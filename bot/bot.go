@@ -149,10 +149,10 @@ func (me *Bot) sell(trade config.Trade, price float64) error {
 func welcomeMessage(config config.Config) string {
 	msg := fmt.Sprintf("%s started! :money_mouth_face:\n\n", config.Name)
 	for i, trade := range config.Trades {
-		msg += fmt.Sprintf("> **%d:** %s\n", i+1, trade.Symbol)
-		msg += fmt.Sprintf("> **Interval:** %s\n", trade.Interval)
-		msg += fmt.Sprintf("> **Purchase price:** %.2f\n", trade.BuyPrice)
-		msg += fmt.Sprintf("> **Sale Price:** %.2f\n", trade.SellPrice)
+		msg += fmt.Sprintf("> *%d: %s*\n", i+1, trade.Symbol)
+		msg += fmt.Sprintf("> *Interval:* %s\n", trade.Interval)
+		msg += fmt.Sprintf("> *Purchase price:* %.2f\n", trade.BuyPrice)
+		msg += fmt.Sprintf("> *Sale Price:* %.2f\n", trade.SellPrice)
 	}
 
 	return msg
