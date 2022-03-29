@@ -13,10 +13,10 @@ trades:
     buyPrice: 0.53
     sellPrice: 1.08
   - symbol: "IOTA/USDT"
-    interval: "5m"
+    interval: "1m"
     buyPrice: 0.66
     sellPrice: 1.03
   - symbol: "WAVES/USDT"
-    interval: "5m"
+    interval: "1m"
     buyPrice: 8.20
     sellPrice: 54.31
