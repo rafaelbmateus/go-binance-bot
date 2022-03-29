@@ -25,6 +25,7 @@ func NewSlackNotify(username, webhook string) *SlackNotify {
 type SlackMessage struct {
 	Username string `json:"username,omitempty"`
 	Text     string `json:"text,omitempty"`
+	Icon     string `json:"icon_emoji"`
 }
 
 func NewMessage(text string) *SlackMessage {
@@ -35,6 +36,7 @@ func NewMessage(text string) *SlackMessage {
 
 func (me SlackNotify) SendMessage(slackRequest *SlackMessage) error {
 	slackRequest.Username = me.Username
+	slackRequest.Icon = ":robot_face:"
 	slackMsg, err := json.Marshal(slackRequest)
 	if err != nil {
 		return err
