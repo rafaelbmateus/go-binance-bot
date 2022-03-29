@@ -3,6 +3,7 @@ package bot
 import (
 	"context"
 	"fmt"
+	"math"
 	"time"
 
 	"github.com/rafaelbmateus/binance-bot/binance"
@@ -64,10 +65,10 @@ func (me *Bot) Monitor(trade config.Trade) error {
 		return err
 	}
 
-	if currentPrice < trade.BuyPrice {
-		me.Log.Debug().Msgf("time to buy! price of %s is %v buyPrice=%f",
+	if currentPrice <= trade.BuyPrice {
+		me.Log.Debug().Msgf("time to buy %s with price %f buyPrice=%f",
 			trade.Symbol, currentPrice, trade.BuyPrice)
-		err := me.trade("BUY", trade.BuyWith(), trade.GetSymbol(), trade, currentPrice)
+		err := me.buy(trade, currentPrice)
 		if err != nil {
 			return err
 		}
@@ -75,10 +76,10 @@ func (me *Bot) Monitor(trade config.Trade) error {
 		return nil
 	}
 
-	if currentPrice > trade.SellPrice {
-		me.Log.Debug().Msgf("time to sell! price of %s is %v sellPrice=%f",
-			trade.Symbol, currentPrice, trade.SellPrice)
-		err := me.trade("SELL", trade.GetSymbol(), trade.BuyWith(), trade, currentPrice)
+	if currentPrice >= trade.SellPrice {
+		me.Log.Debug().Msgf("time to sell %s with price %f buyPrice=%f",
+			trade.Symbol, currentPrice, trade.BuyPrice)
+		err := me.sell(trade, currentPrice)
 		if err != nil {
 			return err
 		}
@@ -92,9 +93,8 @@ func (me *Bot) Monitor(trade config.Trade) error {
 }
 
 // trade create an order to buy or sell.
-func (me *Bot) trade(side string, symbol string, buyWith string,
-	trade config.Trade, price float64) error {
-	wallet, err := me.Binance.SymbolBalance(symbol)
+func (me *Bot) buy(trade config.Trade, price float64) error {
+	wallet, err := me.Binance.SymbolBalance(trade.BuyWith())
 	if err != nil {
 		return err
 	}
@@ -103,16 +103,47 @@ func (me *Bot) trade(side string, symbol string, buyWith string,
 		return nil
 	}
 
-	me.Log.Debug().Msgf("available to %s in wallet %f", side, wallet)
-	order, err := me.Binance.CreateOrder(symbol, buyWith,
-		side, wallet, trade.SellPrice)
+	quantity := math.Floor(wallet / price)
+	if quantity == 0 {
+		return nil
+	}
 
+	order, err := me.Binance.CreateOrder(trade.GetSymbol(), trade.BuyWith(),
+		"BUY", quantity, trade.BuyPrice)
 	if err != nil {
 		return err
 	}
 
-	me.Log.Debug().Msgf("order to %s created %v", side, trade)
-	me.Notify.SendMessage(notify.NewMessage(fmt.Sprintf("order to %s created %v", side, order)))
+	me.Log.Debug().Msgf("order to buy created %v", trade)
+	me.Notify.SendMessage(notify.NewMessage(fmt.Sprintf("Order to buy created %v", order)))
+
+	return nil
+}
+
+// trade create an order to buy or sell.
+func (me *Bot) sell(trade config.Trade, price float64) error {
+	wallet, err := me.Binance.SymbolBalance(trade.GetSymbol())
+	if err != nil {
+		return err
+	}
+
+	if wallet == 0 {
+		return nil
+	}
+
+	quantity := math.Floor(wallet / price)
+	if quantity == 0 {
+		return nil
+	}
+
+	order, err := me.Binance.CreateOrder(trade.GetSymbol(), trade.BuyWith(),
+		"SELL", wallet, trade.SellPrice)
+	if err != nil {
+		return err
+	}
+
+	me.Log.Debug().Msgf("order to sell created %v", trade)
+	me.Notify.SendMessage(notify.NewMessage(fmt.Sprintf("Order to sell created %v", order)))
 
 	return nil
 }
