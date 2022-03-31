@@ -18,5 +18,5 @@ trades:
     sellPrice: 1.03
   - symbol: "WAVES/USDT"
     interval: "1m"
-    buyPrice: 8.20
+    buyPrice: 30.20
     sellPrice: 54.31
