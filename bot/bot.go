@@ -41,7 +41,7 @@ func (me *Bot) Run() {
 		go me.Watchdog(trade)
 	}
 
-	me.Notify.SendMessage(notify.NewMessage(welcomeMessage(*me.Config)))
+	me.Notify.SendMessage(notify.NewMessage(me.welcomeMessage(*me.Config)))
 }
 
 // Watchdog the trade forever in a time interval.
@@ -146,13 +146,16 @@ func (me *Bot) sell(trade config.Trade, price float64) error {
 	return nil
 }
 
-func welcomeMessage(config config.Config) string {
+func (me *Bot) welcomeMessage(config config.Config) string {
 	msg := fmt.Sprintf("%s started! :money_mouth_face:\n\n", config.Name)
 	for i, trade := range config.Trades {
+		currentPrice, _ := me.Binance.SymbolPrice(trade.GetSymbol(), trade.BuyWith(), "1m")
 		msg += fmt.Sprintf("> *%d: %s*\n", i+1, trade.Symbol)
 		msg += fmt.Sprintf("> *Interval:* %s\n", trade.Interval)
-		msg += fmt.Sprintf("> *Purchase price:* %.2f\n", trade.BuyPrice)
-		msg += fmt.Sprintf("> *Sale Price:* %.2f\n", trade.SellPrice)
+		msg += fmt.Sprintf("> *Current price:* %.2f\n", currentPrice)
+		msg += fmt.Sprintf("> *Buy price:* %.2f\n", trade.BuyPrice)
+		msg += fmt.Sprintf("> *Sell Price:* %.2f\n", trade.SellPrice)
+		msg += fmt.Sprintf("> *Profit:* %.1f%%\n\n", (trade.BuyPrice/trade.SellPrice)*100)
 	}
 
 	return msg
