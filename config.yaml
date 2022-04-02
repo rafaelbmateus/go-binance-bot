@@ -1,11 +1,11 @@
 name: "go-binance-bot"
 trades:
   - symbol: "BTC/USDT"
-    interval: "1m"
+    interval: "5m"
     buyPrice: 34322.0
     sellPrice: 50640.0
   - symbol: "LOKA/USDT"
-    interval: "30s"
+    interval: "5m"
     buyPrice: 1.51
     sellPrice: 3.08
   - symbol: "TRIBE/USDT"
@@ -17,6 +17,10 @@ trades:
     buyPrice: 0.66
     sellPrice: 1.03
   - symbol: "WAVES/USDT"
-    interval: "1m"
+    interval: "5m"
     buyPrice: 30.20
     sellPrice: 54.31
+  - symbol: "XRP/USDT"
+    interval: "5m"
+    buyPrice: 0.80
+    sellPrice: 0.90
