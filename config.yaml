@@ -19,7 +19,7 @@ trades:
   - symbol: "WAVES/USDT"
     interval: "5m"
     buyPrice: 30.20
-    sellPrice: 53.31
+    sellPrice: 40.31
   - symbol: "XRP/USDT"
     interval: "5m"
     buyPrice: 0.80
