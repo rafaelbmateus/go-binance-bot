@@ -107,7 +107,7 @@ func (me *Bot) buy(trade config.Trade, price float64) error {
 	}
 
 	order, err := me.Binance.CreateOrder(trade.GetSymbol(), trade.BuyWith(),
-		"BUY", quantity, trade.BuyPrice)
+		"BUY", quantity, price)
 	if err != nil {
 		return err
 	}
