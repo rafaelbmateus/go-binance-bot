@@ -92,12 +92,23 @@ func (me *Bot) Monitor(trade config.Trade) error {
 
 // trade create an order to buy or sell.
 func (me *Bot) buy(trade config.Trade, price float64) error {
-	wallet, err := me.Binance.SymbolBalance(trade.BuyWith())
+	wallet, err := me.Binance.SymbolBalance(trade.GetSymbol())
 	if err != nil {
 		return err
 	}
 
-	if wallet == 0 {
+	// already bought.
+	if math.Floor(wallet) > 0 {
+		return nil
+	}
+
+	wallet, err = me.Binance.SymbolBalance(trade.BuyWith())
+	if err != nil {
+		return err
+	}
+
+	// don't have enough to buy.
+	if wallet == 0 || wallet < trade.Limit {
 		return nil
 	}
 
