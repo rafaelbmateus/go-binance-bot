@@ -1,10 +1,19 @@
 # go-binance-bot
 
-Go Bincance Bot run trades automatically.
-Put the buy or sell price and let the bot work for you.
+This project runs trades automatically and send notifications.
+Basically you run the container and let the bot working for you.
 
 Simple like:
-> Buy when it's cheap or sell when it's expensive.
+> Buy when it's cheap! And sell when it's expensive.
+
+## Binance API
+
+Fist, you need a binance api credentials.
+
+If you don't have a binance api read
+(https://www.binance.com/pt-BR/support/faq/360002502072)[How to create binance api]
+
+Save your secrets in a safe place then we will put it in the `.env`
 
 ## Bot Config
 
@@ -34,9 +43,7 @@ trades:
 
 To run the bot on your computer, you need to have docker and compose installed.
 
-First, create a `.env` file in root folder with your
-[binance api key](https://www.binance.com/en/support/faq/360002502072)
-like this:
+First, create a `.env` file in root folder with your binance api:
 
 ```console
 BINANCE_API_KEY=<YOUR_API_KEY_HERE>
