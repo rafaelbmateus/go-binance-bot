@@ -1,3 +1,12 @@
-theme: jekyll-theme-slate
 title: Go Binance Bot
-description: Go Binance Bot run trades automatically and send notification to slack
+email: rafaelbmateus.dev@gmail.com
+description: >
+  Go Binance Bot run trades automatically and send notification to slack.
+baseurl: ""
+url: ""
+github_username:  rafaelbmateus
+
+# Build settings
+theme: minima
+plugins:
+  - jekyll-feed
