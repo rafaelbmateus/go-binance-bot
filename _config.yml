@@ -1,8 +1,6 @@
+theme: jekyll-theme-cayman
 title: Go Binance Bot
 description: Runs trades automatically and send notification to slack.
 baseurl: "/"
-
-# Build settings
-theme: jekyll-theme-cayman
 plugins:
   - jekyll-feed
