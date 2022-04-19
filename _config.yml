@@ -1,9 +1,6 @@
 title: Go Binance Bot
-email: rafaelbmateus.dev@gmail.com
 description: Runs trades automatically and send notification to slack.
 baseurl: "/"
-url: ""
-github_username:  rafaelbmateus
 
 # Build settings
 theme: jekyll-theme-cayman
