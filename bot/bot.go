@@ -112,7 +112,7 @@ func (me *Bot) buy(trade config.Trade, price float64) error {
 		return nil
 	}
 
-	quantity := math.Floor(wallet / price)
+	quantity := math.Floor(trade.Limit / price)
 	if quantity == 0 {
 		return nil
 	}
