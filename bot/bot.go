@@ -90,15 +90,15 @@ func (me *Bot) Monitor(trade config.Trade) error {
 	return nil
 }
 
-// trade create an order to buy or sell.
+// create an order to buy.
 func (me *Bot) buy(trade config.Trade, price float64) error {
 	wallet, err := me.Binance.SymbolBalance(trade.GetSymbol())
 	if err != nil {
 		return err
 	}
 
-	// already bought.
 	if math.Floor(wallet) > 0 {
+		me.Log.Debug().Msgf("[%s] already bought this coin", trade.Symbol)
 		return nil
 	}
 
@@ -107,23 +107,26 @@ func (me *Bot) buy(trade config.Trade, price float64) error {
 		return err
 	}
 
-	// don't have enough to buy.
 	if wallet == 0 || wallet < trade.Limit {
+		me.Log.Debug().Msgf("[%s] don't have %s enough on wallet to buy",
+			trade.Symbol, trade.BuyWith())
 		return nil
 	}
 
 	quantity := math.Floor(trade.Limit / price)
 	if quantity == 0 {
+		me.Log.Debug().Msgf("[%s] don't have quantity enough to buy",
+			trade.Symbol)
 		return nil
 	}
 
-	order, err := me.Binance.CreateOrder(trade.GetSymbol(), trade.BuyWith(),
-		"BUY", quantity, price)
+	order, err := me.Binance.CreateOrder(trade.GetSymbol(),
+		trade.BuyWith(), "BUY", quantity, price)
 	if err != nil {
 		return err
 	}
 
-	me.Log.Debug().Msgf("[%s] buy for %d", trade.Symbol, price)
+	me.Log.Info().Msgf("[%s] order to buy for %d", trade.Symbol, price)
 	me.Notify.SendMessage(notify.NewMessage(
 		fmt.Sprintf("[%s] Order to buy created for %s, quantity: %.2f, wallet: %.2f",
 			trade.Symbol, order.Price, quantity, wallet)))
@@ -131,7 +134,7 @@ func (me *Bot) buy(trade config.Trade, price float64) error {
 	return nil
 }
 
-// trade create an order to buy or sell.
+// create an order to sell.
 func (me *Bot) sell(trade config.Trade, price float64) error {
 	wallet, err := me.Binance.SymbolBalance(trade.GetSymbol())
 	if err != nil {
@@ -139,16 +142,20 @@ func (me *Bot) sell(trade config.Trade, price float64) error {
 	}
 
 	if wallet == 0 {
+		me.Log.Debug().Msgf("[%s] don't have enough on wallet to sell",
+			trade.Symbol)
 		return nil
 	}
 
 	quantity := math.Floor(wallet / price)
 	if quantity == 0 {
+		me.Log.Debug().Msgf("[%s] don't have quantity enough to sell",
+			trade.Symbol)
 		return nil
 	}
 
-	order, err := me.Binance.CreateOrder(trade.GetSymbol(), trade.BuyWith(),
-		"SELL", quantity, price)
+	order, err := me.Binance.CreateOrder(trade.GetSymbol(),
+		trade.BuyWith(), "SELL", quantity, price)
 	if err != nil {
 		return err
 	}
@@ -161,6 +168,7 @@ func (me *Bot) sell(trade config.Trade, price float64) error {
 	return nil
 }
 
+// format welcome message notification.
 func (me *Bot) welcomeMessage(config config.Config) string {
 	msg := fmt.Sprintf("%s started! :money_mouth_face:\n\n", config.Name)
 	for i, trade := range config.Trades {
