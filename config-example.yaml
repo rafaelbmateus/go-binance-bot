@@ -1,0 +1,7 @@
+name: "go-binance-bot"
+trades:
+  - symbol: "LOKA/USDT"
+    interval: "10s"
+    buyPrice: 3.51
+    sellPrice: 4.01
+    limit: 10
