@@ -10,6 +10,7 @@ type Trade struct {
 	Interval  time.Duration `yaml:"interval"`
 	BuyPrice  float64       `yaml:"buyPrice"`
 	SellPrice float64       `yaml:"sellPrice"`
+	Limit     float64       `yaml:"limit"`
 }
 
 // GetSymbol split to get symbol that want to buy.
