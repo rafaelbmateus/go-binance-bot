@@ -168,6 +168,21 @@ func (me *Bot) sell(trade config.Trade, price float64) error {
 	return nil
 }
 
+// check rules before buy.
+func (me *Bot) rules(trade *config.Trade) error {
+	exchange, err := me.Binance.SymbolExchangeInfo(trade.Symbol)
+	if err != nil {
+		return err
+	}
+
+	minNotional := exchange.Symbols[0].MinNotionalFilter().MinNotional
+	minQuantity := exchange.Symbols[0].LotSizeFilter().MinQuantity
+	me.Log.Debug().Msgf("[%s] minNotional=%.2f minQuantity=%.2f",
+		trade.Symbol, minNotional, minQuantity)
+
+	return nil
+}
+
 // format welcome message notification.
 func (me *Bot) welcomeMessage(config config.Config) string {
 	msg := fmt.Sprintf("%s started! :money_mouth_face:\n\n", config.Name)
