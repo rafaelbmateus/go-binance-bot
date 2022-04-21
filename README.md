@@ -1,4 +1,4 @@
-# go-binance-bot
+# Go Binance Bot
 
 This project runs trades automatically and send notifications.
 Basically you run the container and let the bot working for you.
