@@ -11,7 +11,7 @@ Simple like:
 Fist, you need a binance api credentials.
 
 If you don't have a binance api read
-[https://www.binance.com/pt-BR/support/faq/360002502072](How to create binance api)
+[How to create binance api](https://www.binance.com/pt-BR/support/faq/360002502072)
 
 Save your secrets in a safe place then we will put it in the `.env`
 
