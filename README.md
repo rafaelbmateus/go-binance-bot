@@ -11,14 +11,26 @@ Simple like:
 Fist, you need a binance api credentials.
 
 If you don't have a binance api read
-[How to create binance api](https://www.binance.com/pt-BR/support/faq/360002502072)
+[How to create binance api](https://www.binance.com/pt-BR/support/faq/360002502072).
 
-Save your secrets in a safe place then we will put it in the `.env`
+Save your secrets in a safe place then we will put it in the `.env`.
 
-## Bot Config
+# How to run?
+
+To run the bot on your computer you need to have
+[docker](https://docker.com) and [compose](https://docs.docker.com/compose) installed.
+
+Make sure you created the `.env` and `config.yaml` files:
+
+```console
+cp config-example.yaml config.yaml
+cp example.env .env
+```
+
+## Config file
 
 The bot configuration is provided by yaml file that
-has the following trade parameters.
+has the following trade parameters `config.yaml`.
 In this file, put the symbol price you want to buy and sell.
 
 ```yaml
@@ -42,24 +54,21 @@ trades:
 * sellPrice: Create a sell order when the price is high - `float64`
 * limit: Limit of USDT that will negotiate - `float64`
 
-# How to run?
+## Env file
 
-To run the bot on your computer you need to have docker and compose installed.
-
-If you are running in the first time you need create `.env` and `config.yaml` files.
-Use this command to generate the files in the correct location:
-
-```console
-make config
-```
-
-Then change your environment vars in `.env`
+Change your environment vars in `.env` file
 with your binance api credentials.
 
-Another file you should customize is the `config.yaml`
-with the cryptocurrencies you want to trade.
+```
+BINANCE_API_KEY=xXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX
+BINANCE_API_SECRET=xXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX
+SLACK_WEBHOOK_URL=https://hooks.slack.com/services/ABABABABA/BABABABABAB/BLABLABLABLABLABLABLABLA
+```
 
-Finally, to run the project, exec:
+## Running the bot
+
+Finally start the containers to monitor
+the coins and open buy or sell order:
 
 ```console
 make up logs
@@ -73,8 +82,21 @@ app_1  | {"level":"debug","time":"2022-03-28T13:19:35Z","message":"time to SELL 
 ...
 ```
 
-To stop the bot and remove container, exec:
+To stop the bot and remove container, execute:
 
 ```console
 make clean
 ```
+
+## 📫 Contributing
+
+To contribute to the project, follow these steps:
+
+1. Clone the repository: `git clone git@github.com:rafaelbmateus/go-binance-bot.git`
+2. Create a feature branch: `git switch -c feature-a`
+3. Make changes and confirm (try using [conventional commits](https://www.conventionalcommits.org)): `git commit -m 'feat: new bot feature'`
+4. Push the feature branch: `git push origin feature-a`
+5. Create a [pull request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request)
+6. Get reviews from other users
+7. Merge to `main` branch (we encourage using commit squash)
+8. Remove the branch merged.
