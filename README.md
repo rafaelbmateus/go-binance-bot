@@ -1,4 +1,4 @@
-# go-binance-bot
+# Go Binance Bot
 
 This project runs trades automatically and send notifications.
 Basically you run the container and let the bot working for you.
@@ -11,7 +11,7 @@ Simple like:
 Fist, you need a binance api credentials.
 
 If you don't have a binance api read
-(https://www.binance.com/pt-BR/support/faq/360002502072)[How to create binance api]
+[How to create binance api](https://www.binance.com/pt-BR/support/faq/360002502072)
 
 Save your secrets in a safe place then we will put it in the `.env`
 
@@ -25,50 +25,41 @@ In this file, put the symbol price you want to buy and sell.
 name: "My binance bot"
 trades:
   - symbol: "BTC/USDT"
-    interval: "1m"
+    interval: "10s"
     buyPrice: 34322.0
     sellPrice: 50640.0
+    limit: 100
   - symbol: "LOKA/USDT"
-    interval: "30s"
+    interval: "1m"
     buyPrice: 1.51
     sellPrice: 3.08
+    limit: 10
 ```
 
 * symbol: Symbol name to trade - `string`
 * interval: Interval to the next trade - `time.Duration`
 * buyPrice: Create a buy order when the price is below - `float64`
 * sellPrice: Create a sell order when the price is high - `float64`
+* limit: Limit of USDT that will negotiate - `float64`
 
 # How to run?
 
-To run the bot on your computer, you need to have docker and compose installed.
+To run the bot on your computer you need to have docker and compose installed.
 
-First, create a `.env` file in root folder with your binance api:
-
-```console
-BINANCE_API_KEY=<YOUR_API_KEY_HERE>
-BINANCE_API_SECRET=<YOUR_API_SECRET_HERE>
-SLACK_WEBHOOK_URL=<YOUR_SLACK_WEBHOOK_URL_HERE>
-```
-
-See the project structure to know where to put the `.env` file with your keys:
+If you are running in the first time you need create `.env` and `config.yaml` files.
+Use this command to generate the files in the correct location:
 
 ```console
-├── binance/
-├── bot/
-├── build/
-├── config/
-├── notify/
-├── .env  <-----  # put your env file here!
-├── config.yaml
-├── go.mod
-├── go.sum
-├── main.go
-├── Makefile
-└── README.md
+make config
 ```
 
-Finally to run the project, exec:
+Then change your environment vars in `.env`
+with your binance api credentials.
+
+Another file you should customize is the `config.yaml`
+with the cryptocurrencies you want to trade.
+
+Finally, to run the project, exec:
 
 ```console
 make up logs
