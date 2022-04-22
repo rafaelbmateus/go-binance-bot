@@ -35,6 +35,10 @@ func NewMessage(text string) *SlackMessage {
 }
 
 func (me SlackNotify) SendMessage(slackRequest *SlackMessage) error {
+	if me.WebHookURL == "" {
+		return nil
+	}
+
 	slackRequest.Username = me.Username
 	slackRequest.Icon = ":robot_face:"
 	slackMsg, err := json.Marshal(slackRequest)

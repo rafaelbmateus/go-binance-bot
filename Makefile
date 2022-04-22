@@ -1,5 +1,10 @@
 compose = docker-compose -f build/docker-compose.yml
 
+.PHONY: config
+config: ##@development Initial configuration files.
+	cp config-example.yaml config.yaml
+	cp example.env .env
+
 .PHONY: build
 build: ##@development Build development environment.
 	$(compose) build
