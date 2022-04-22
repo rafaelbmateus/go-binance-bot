@@ -178,7 +178,7 @@ func (me *Bot) welcomeMessage(config config.Config) string {
 		msg += fmt.Sprintf("> *Current price:* %.2f\n", currentPrice)
 		msg += fmt.Sprintf("> *Buy price:* %.2f\n", trade.BuyPrice)
 		msg += fmt.Sprintf("> *Sell Price:* %.2f\n", trade.SellPrice)
-		msg += fmt.Sprintf("> *Profit:* %.1f%%\n\n", (trade.BuyPrice/trade.SellPrice)*100)
+		msg += fmt.Sprintf("> *Profit:* %.2f%%\n\n", (trade.SellPrice-trade.BuyPrice)/(trade.SellPrice)*100)
 	}
 
 	return msg
