@@ -178,7 +178,9 @@ func (me *Bot) welcomeMessage(config config.Config) string {
 		msg += fmt.Sprintf("> *Current price:* %.5f\n", currentPrice)
 		msg += fmt.Sprintf("> *Buy price:* %.5f\n", trade.BuyPrice)
 		msg += fmt.Sprintf("> *Sell Price:* %.5f\n", trade.SellPrice)
-		msg += fmt.Sprintf("> *Profit:* %.2f%%\n\n", (trade.SellPrice-trade.BuyPrice)/(trade.SellPrice)*100)
+		msg += fmt.Sprintf("> *Fee rate:* %.4f%%\n", binance.Fee(trade.BuyWith()))
+		msg += fmt.Sprintf("> *Profit:* %.5f - %.2f%%\n", binance.Profit(trade), binance.ProfitPerc(trade))
+		msg += "\n"
 	}
 
 	return msg
