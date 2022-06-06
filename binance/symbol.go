@@ -2,7 +2,6 @@ package binance
 
 import (
 	"fmt"
-	"math"
 	"strconv"
 )
 
@@ -20,7 +19,7 @@ func (me *Binance) SymbolBalance(symbol string) (float64, error) {
 				return 0, err
 			}
 
-			return math.Floor(free), nil
+			return free, nil
 		}
 	}
 

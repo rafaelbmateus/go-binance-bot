@@ -10,7 +10,6 @@ import (
 	"github.com/rafaelbmateus/binance-bot/config"
 	"github.com/rafaelbmateus/binance-bot/notify"
 	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
 )
 
 // Bot is a representation of this package.
@@ -115,7 +114,6 @@ func (me *Bot) buy(trade config.Trade, price float64) error {
 	}
 
 	quantity := math.Floor((trade.Limit/price)*100000) / 100000
-	log.Debug().Msgf("quantity", quantity)
 	if quantity == 0 {
 		me.Log.Debug().Msgf("[%s] don't have quantity enough to buy",
 			trade.Symbol)
@@ -149,7 +147,7 @@ func (me *Bot) sell(trade config.Trade, price float64) error {
 		return nil
 	}
 
-	quantity := math.Floor(wallet / price)
+	quantity := math.Floor((trade.Limit/price)*100000) / 100000
 	if quantity == 0 {
 		me.Log.Debug().Msgf("[%s] don't have quantity enough to sell",
 			trade.Symbol)
@@ -164,7 +162,7 @@ func (me *Bot) sell(trade config.Trade, price float64) error {
 
 	me.Log.Debug().Msgf("[%s] sell for %.5f", trade.Symbol, price)
 	me.Notify.SendMessage(notify.NewMessage(
-		fmt.Sprintf("[%s] Order to buy sell for %s, quantity: %.2f, wallet: %.5f",
+		fmt.Sprintf("[%s] Order to sell for %s, quantity: %.2f, wallet: %.5f",
 			trade.Symbol, order.Price, quantity, wallet)))
 
 	return nil
