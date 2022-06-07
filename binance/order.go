@@ -28,7 +28,7 @@ func getSide(side string) binance.SideType {
 	return binance.SideTypeBuy
 }
 
-// toString converts a float to string with precision 2.
+// toString converts a float to string with precision 5.
 func toString(value float64) string {
-	return fmt.Sprintf("%.2f", value)
+	return fmt.Sprintf("%.5f", value)
 }

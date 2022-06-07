@@ -49,7 +49,7 @@ func (me *Bot) Watchdog(trade config.Trade) {
 	for {
 		err := me.Monitor(trade)
 		if err != nil {
-			me.Log.Error().Msgf("watchdog sleep error %q", err)
+			me.Log.Error().Msgf("[%s] watchdog sleep error %q", trade.Symbol, err)
 		}
 
 		time.Sleep(trade.Interval)
@@ -64,8 +64,8 @@ func (me *Bot) Monitor(trade config.Trade) error {
 	}
 
 	if currentPrice <= trade.BuyPrice {
-		me.Log.Debug().Msgf("[%s] current price=%.2f - nice to buy!",
-			trade.Symbol, currentPrice, trade.BuyPrice)
+		me.Log.Debug().Msgf("[%s] current price=%.5f - nice to buy!",
+			trade.Symbol, currentPrice)
 		err := me.buy(trade, currentPrice)
 		if err != nil {
 			return err
@@ -75,8 +75,8 @@ func (me *Bot) Monitor(trade config.Trade) error {
 	}
 
 	if currentPrice >= trade.SellPrice {
-		me.Log.Debug().Msgf("[%s] current price=%.2f - nice to sell!",
-			trade.Symbol, currentPrice, trade.SellPrice)
+		me.Log.Debug().Msgf("[%s] current price=%.5f - nice to sell!",
+			trade.Symbol, currentPrice)
 		err := me.sell(trade, currentPrice)
 		if err != nil {
 			return err
@@ -85,7 +85,7 @@ func (me *Bot) Monitor(trade config.Trade) error {
 		return nil
 	}
 
-	me.Log.Debug().Msgf("[%s] current price=%.2f buy=%.2f sell=%.2f",
+	me.Log.Debug().Msgf("[%s] current price=%.5f buy=%.5f sell=%.5f",
 		trade.Symbol, currentPrice, trade.BuyPrice, trade.SellPrice)
 	return nil
 }
@@ -113,7 +113,7 @@ func (me *Bot) buy(trade config.Trade, price float64) error {
 		return nil
 	}
 
-	quantity := math.Floor(trade.Limit / price)
+	quantity := math.Floor((trade.Limit/price)*100000) / 100000
 	if quantity == 0 {
 		me.Log.Debug().Msgf("[%s] don't have quantity enough to buy",
 			trade.Symbol)
@@ -126,9 +126,9 @@ func (me *Bot) buy(trade config.Trade, price float64) error {
 		return err
 	}
 
-	me.Log.Info().Msgf("[%s] order to buy for %d", trade.Symbol, price)
+	me.Log.Info().Msgf("[%s] order to buy for %.5f", trade.Symbol, price)
 	me.Notify.SendMessage(notify.NewMessage(
-		fmt.Sprintf("[%s] Order to buy created for %s, quantity: %.2f, wallet: %.2f",
+		fmt.Sprintf("[%s] Order to buy created for %s, quantity: %.5f, wallet: %.5f",
 			trade.Symbol, order.Price, quantity, wallet)))
 
 	return nil
@@ -147,7 +147,7 @@ func (me *Bot) sell(trade config.Trade, price float64) error {
 		return nil
 	}
 
-	quantity := math.Floor(wallet / price)
+	quantity := math.Floor((trade.Limit/price)*100000) / 100000
 	if quantity == 0 {
 		me.Log.Debug().Msgf("[%s] don't have quantity enough to sell",
 			trade.Symbol)
@@ -160,9 +160,9 @@ func (me *Bot) sell(trade config.Trade, price float64) error {
 		return err
 	}
 
-	me.Log.Debug().Msgf("[%s] sell for %d", trade.Symbol, price)
+	me.Log.Debug().Msgf("[%s] sell for %.5f", trade.Symbol, price)
 	me.Notify.SendMessage(notify.NewMessage(
-		fmt.Sprintf("[%s] Order to buy sell for %s, quantity: %.2f, wallet: %.2f",
+		fmt.Sprintf("[%s] Order to sell for %s, quantity: %.2f, wallet: %.5f",
 			trade.Symbol, order.Price, quantity, wallet)))
 
 	return nil
@@ -175,10 +175,10 @@ func (me *Bot) welcomeMessage(config config.Config) string {
 		currentPrice, _ := me.Binance.SymbolPrice(trade.GetSymbol(), trade.BuyWith(), "1m")
 		msg += fmt.Sprintf("> *%d: %s*\n", i+1, trade.Symbol)
 		msg += fmt.Sprintf("> *Interval:* %s\n", trade.Interval)
-		msg += fmt.Sprintf("> *Current price:* %.2f\n", currentPrice)
-		msg += fmt.Sprintf("> *Buy price:* %.2f\n", trade.BuyPrice)
-		msg += fmt.Sprintf("> *Sell Price:* %.2f\n", trade.SellPrice)
-		msg += fmt.Sprintf("> *Profit:* %.1f%%\n\n", (trade.BuyPrice/trade.SellPrice)*100)
+		msg += fmt.Sprintf("> *Current price:* %.5f\n", currentPrice)
+		msg += fmt.Sprintf("> *Buy price:* %.5f\n", trade.BuyPrice)
+		msg += fmt.Sprintf("> *Sell Price:* %.5f\n", trade.SellPrice)
+		msg += fmt.Sprintf("> *Profit:* %.2f%%\n\n", (trade.SellPrice-trade.BuyPrice)/(trade.SellPrice)*100)
 	}
 
 	return msg
