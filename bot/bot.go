@@ -63,20 +63,25 @@ func (me *Bot) Monitor(trade config.Trade) error {
 		return err
 	}
 
+	wallet, err := me.Binance.SymbolBalance(trade.GetSymbol())
+	if err != nil {
+		return err
+	}
+
 	rsi, err := me.calculateRSI(trade)
 	if err != nil {
 		return err
 	}
 
-	me.Log.Info().Msgf("[%s] amount=%.5f price=%.5f rsi=%.2f",
-		trade.Symbol, trade.Amount, price, rsi)
+	me.Log.Info().Msgf("[%s] wallet: %.5f amount: %.5f price: %.5f rsi: %.2f",
+		trade.Symbol, wallet, trade.Amount, price, rsi)
 
 	if rsi <= trade.RSIBuy {
 		if trade.Amount == 0 {
 			return nil
 		}
 
-		err := me.buy(trade, price, rsi)
+		err := me.buy(trade, wallet, price, rsi)
 		if err != nil {
 			return err
 		}
@@ -89,7 +94,7 @@ func (me *Bot) Monitor(trade config.Trade) error {
 			return nil
 		}
 
-		err := me.sell(trade, price, rsi)
+		err := me.sell(trade, wallet, price, rsi)
 		if err != nil {
 			return err
 		}
@@ -117,12 +122,7 @@ func (me *Bot) calculateRSI(trade config.Trade) (float64, error) {
 }
 
 // create an order to buy.
-func (me *Bot) buy(trade config.Trade, price, rsi float64) error {
-	wallet, err := me.Binance.SymbolBalance(trade.GetSymbol())
-	if err != nil {
-		return err
-	}
-
+func (me *Bot) buy(trade config.Trade, wallet, price, rsi float64) error {
 	if wallet >= trade.Amount {
 		me.Log.Debug().Msgf("[%s] already bought, %.5f on wallet", trade.Symbol, wallet)
 		return nil
@@ -135,19 +135,14 @@ func (me *Bot) buy(trade config.Trade, price, rsi float64) error {
 	}
 
 	me.Notify.SendMessage(notify.NewMessage(
-		fmt.Sprintf("*[%s] Order to buy created*\nPrice: %s\nAmount: %.5f\nRSI: %.2f",
-			trade.Symbol, order.Price, trade.Amount, rsi)))
+		fmt.Sprintf("*[%s] Order to buy created!*\nPrice: %s\nWallet: %.5f\nAmount: %.5f\nRSI: %.2f",
+			trade.Symbol, order.Price, wallet, trade.Amount, rsi)))
 
 	return nil
 }
 
 // create an order to sell.
-func (me *Bot) sell(trade config.Trade, price, rsi float64) error {
-	wallet, err := me.Binance.SymbolBalance(trade.GetSymbol())
-	if err != nil {
-		return err
-	}
-
+func (me *Bot) sell(trade config.Trade, wallet, price, rsi float64) error {
 	if wallet < trade.Amount {
 		me.Log.Debug().Msgf("[%s] don't have enough to sell, %.5f on wallet", trade.Symbol, wallet)
 		return nil
@@ -160,8 +155,8 @@ func (me *Bot) sell(trade config.Trade, price, rsi float64) error {
 	}
 
 	me.Notify.SendMessage(notify.NewMessage(
-		fmt.Sprintf("*[%s] Order to sell created*\nPrice: %s\nAmount: %.5f\nRSI: %.2f",
-			trade.Symbol, order.Price, trade.Amount, rsi)))
+		fmt.Sprintf("*[%s] Order to sell created!*\nPrice: %s\nWallet: %.5f\nAmount: %.5f\nRSI: %.2f",
+			trade.Symbol, order.Price, wallet, trade.Amount, rsi)))
 
 	return nil
 }
