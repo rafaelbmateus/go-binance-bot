@@ -34,18 +34,37 @@ has the following trade parameters `config.yaml`.
 In this file, put the symbol price you want to buy and sell.
 
 ```yaml
-name: "My binance bot"
+name: "go-binance-bot"
+
 trades:
   - symbol: "BTC/USDT"
     interval: "10s"
-    buyPrice: 34322.0
-    sellPrice: 50640.0
-    limit: 100
+    amount: 0.0004
+    rsi_buy: 30
+    rsi_sell: 70
+    rsi_limit: 14
+    rsi_interval: "15m"
+  - symbol: "BNB/USDT"
+    interval: "10s"
+    amount: 0.05
+    rsi_buy: 30
+    rsi_sell: 70
+    rsi_limit: 14
+    rsi_interval: "15m"
   - symbol: "LOKA/USDT"
-    interval: "1m"
-    buyPrice: 1.51
-    sellPrice: 3.08
-    limit: 10
+    interval: "10s"
+    amount: 20
+    rsi_buy: 30
+    rsi_sell: 70
+    rsi_limit: 14
+    rsi_interval: "15m"
+  - symbol: "ETH/USDT"
+    interval: "10s"
+    amount: 0 # set zero to test the logic.
+    rsi_buy: 30
+    rsi_sell: 70
+    rsi_limit: 14
+    rsi_interval: "15m"
 ```
 
 * symbol: Symbol name to trade - `string`
