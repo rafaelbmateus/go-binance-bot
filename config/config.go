@@ -3,6 +3,8 @@ package config
 import (
 	"io/ioutil"
 	"os"
+	"strings"
+	"time"
 
 	"gopkg.in/yaml.v2"
 )
@@ -10,6 +12,27 @@ import (
 type Config struct {
 	Name   string  `yaml:"name"`
 	Trades []Trade `yaml:"trades"`
+}
+
+type Trade struct {
+	Symbol      string        `yaml:"symbol"`
+	Interval    time.Duration `yaml:"interval"`
+	Amount      float64       `yaml:"amount"`
+	StopLoss    float64       `yaml:"stop_loss"`
+	RSIBuy      float64       `yaml:"rsi_buy"`
+	RSISell     float64       `yaml:"rsi_sell"`
+	RSILimit    int           `yaml:"rsi_limit"`
+	RSIInterval string        `yaml:"rsi_interval"`
+}
+
+// GetSymbol split to get symbol that want to buy.
+func (s *Trade) GetSymbol() string {
+	return strings.Split(s.Symbol, "/")[0]
+}
+
+// BuyWith split to get symbol used to buy.
+func (s *Trade) BuyWith() string {
+	return strings.Split(s.Symbol, "/")[1]
 }
 
 // Load configuration file.

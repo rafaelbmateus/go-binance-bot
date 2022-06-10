@@ -9,7 +9,7 @@ import (
 
 // CreateOrder create new order in binance.
 func (me *Binance) CreateOrder(symbol, buyWith, side string, quantity, price float64) (*binance.CreateOrderResponse, error) {
-	order, err := me.Binance.NewCreateOrderService().Symbol(fmt.Sprintf("%s%s", symbol, buyWith)).
+	order, err := me.Client.NewCreateOrderService().Symbol(fmt.Sprintf("%s%s", symbol, buyWith)).
 		Side(getSide(side)).Type(binance.OrderTypeLimit).TimeInForce(binance.TimeInForceTypeGTC).
 		Quantity(toString(quantity)).Price(toString(price)).Do(*me.Context)
 	if err != nil {

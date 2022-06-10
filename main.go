@@ -19,7 +19,9 @@ var (
 
 func main() {
 	ctx := context.Background()
+
 	log := zerolog.New(os.Stdout).With().Timestamp().Logger()
+	log.Level(zerolog.InfoLevel)
 	log.Info().Msgf("starting with version %s and commit %s", Version, Commit)
 
 	cfg, err := config.Load("config.yaml")

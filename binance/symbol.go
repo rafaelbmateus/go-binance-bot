@@ -1,13 +1,12 @@
 package binance
 
 import (
-	"fmt"
 	"strconv"
 )
 
 // SymbolBalance get available amount in user wallet.
 func (me *Binance) SymbolBalance(symbol string) (float64, error) {
-	acc, err := me.Binance.NewGetAccountService().Do(*me.Context)
+	acc, err := me.Client.NewGetAccountService().Do(*me.Context)
 	if err != nil {
 		return 0, err
 	}
@@ -27,8 +26,8 @@ func (me *Binance) SymbolBalance(symbol string) (float64, error) {
 }
 
 // SymbolPrice get the last symbol price.
-func (me *Binance) SymbolPrice(symbol, buyWith, interval string) (float64, error) {
-	klines, err := me.Binance.NewKlinesService().Symbol(fmt.Sprintf("%s%s", symbol, buyWith)).
+func (me *Binance) SymbolPrice(symbol, interval string) (float64, error) {
+	klines, err := me.Client.NewKlinesService().Symbol(symbol).
 		Interval(interval).Limit(1).Do(*me.Context)
 	if err != nil {
 		return 0, err

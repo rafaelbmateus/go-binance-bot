@@ -19,10 +19,11 @@ var (
 	apiKey    = os.Getenv("BINANCE_API_KEY")
 	apiSecret = os.Getenv("BINANCE_API_SECRET")
 	trade     = config.Trade{
-		Symbol:    "BTC/USDT",
-		BuyPrice:  29202,
-		SellPrice: 30678,
-		Limit:     20,
+		Symbol:      "BTC/USDT",
+		Amount:      0,
+		RSIBuy:      40,
+		RSISell:     60,
+		RSIInterval: "5m",
 	}
 )
 
