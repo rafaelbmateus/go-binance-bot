@@ -135,7 +135,7 @@ func (me *Bot) buy(trade config.Trade, price, rsi float64) error {
 	}
 
 	me.Notify.SendMessage(notify.NewMessage(
-		fmt.Sprintf("[%s] Order to buy created\nPrice: %s\nAmount: %.5f\nRSI: %.2f",
+		fmt.Sprintf("*[%s] Order to buy created*\nPrice: %s\nAmount: %.5f\nRSI: %.2f",
 			trade.Symbol, order.Price, trade.Amount, rsi)))
 
 	return nil
@@ -160,7 +160,7 @@ func (me *Bot) sell(trade config.Trade, price, rsi float64) error {
 	}
 
 	me.Notify.SendMessage(notify.NewMessage(
-		fmt.Sprintf("[%s] Order to sell created\nPrice: %s\nAmount: %.5f\nRSI: %.2f",
+		fmt.Sprintf("*[%s] Order to sell created*\nPrice: %s\nAmount: %.5f\nRSI: %.2f",
 			trade.Symbol, order.Price, trade.Amount, rsi)))
 
 	return nil
