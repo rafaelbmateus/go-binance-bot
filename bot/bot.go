@@ -76,7 +76,7 @@ func (me *Bot) Monitor(trade config.Trade) error {
 			return nil
 		}
 
-		err := me.buy(trade, price)
+		err := me.buy(trade, price, rsi)
 		if err != nil {
 			return err
 		}
@@ -89,7 +89,7 @@ func (me *Bot) Monitor(trade config.Trade) error {
 			return nil
 		}
 
-		err := me.sell(trade, price)
+		err := me.sell(trade, price, rsi)
 		if err != nil {
 			return err
 		}
@@ -117,7 +117,7 @@ func (me *Bot) calculateRSI(trade config.Trade) (float64, error) {
 }
 
 // create an order to buy.
-func (me *Bot) buy(trade config.Trade, price float64) error {
+func (me *Bot) buy(trade config.Trade, price, rsi float64) error {
 	wallet, err := me.Binance.SymbolBalance(trade.GetSymbol())
 	if err != nil {
 		return err
@@ -135,14 +135,14 @@ func (me *Bot) buy(trade config.Trade, price float64) error {
 	}
 
 	me.Notify.SendMessage(notify.NewMessage(
-		fmt.Sprintf("[%s] Order to buy created for %s, amount: %.5f",
-			trade.Symbol, order.Price, trade.Amount)))
+		fmt.Sprintf("[%s] Order to buy created\nPrice: %s\nAmount: %.5f\nRSI: %.2f",
+			trade.Symbol, order.Price, trade.Amount, rsi)))
 
 	return nil
 }
 
 // create an order to sell.
-func (me *Bot) sell(trade config.Trade, price float64) error {
+func (me *Bot) sell(trade config.Trade, price, rsi float64) error {
 	wallet, err := me.Binance.SymbolBalance(trade.GetSymbol())
 	if err != nil {
 		return err
@@ -160,8 +160,8 @@ func (me *Bot) sell(trade config.Trade, price float64) error {
 	}
 
 	me.Notify.SendMessage(notify.NewMessage(
-		fmt.Sprintf("[%s] Order to sell created for %s, amount: %.5f",
-			trade.Symbol, order.Price, trade.Amount)))
+		fmt.Sprintf("[%s] Order to sell created\nPrice: %s\nAmount: %.5f\nRSI: %.2f",
+			trade.Symbol, order.Price, trade.Amount, rsi)))
 
 	return nil
 }
