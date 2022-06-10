@@ -21,7 +21,7 @@ var (
 
 func TestNewBinance(t *testing.T) {
 	b := binance.NewBinance(&log, &ctx, binanceClient)
-	assert.Equal(t, "https://api.binance.com", b.Binance.BaseURL)
+	assert.Equal(t, "https://api.binance.com", b.Client.BaseURL)
 	assert.NotNil(t, b.Context)
 	assert.NotNil(t, b.Log)
 }

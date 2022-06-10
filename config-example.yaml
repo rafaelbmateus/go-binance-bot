@@ -1,7 +1,31 @@
 name: "go-binance-bot"
+
 trades:
+  - symbol: "BTC/USDT"
+    interval: "10s"
+    amount: 0.0004
+    rsi_buy: 30
+    rsi_sell: 70
+    rsi_limit: 14
+    rsi_interval: "15m"
+  - symbol: "BNB/USDT"
+    interval: "10s"
+    amount: 0.05
+    rsi_buy: 30
+    rsi_sell: 70
+    rsi_limit: 14
+    rsi_interval: "15m"
   - symbol: "LOKA/USDT"
     interval: "10s"
-    buyPrice: 3.51
-    sellPrice: 4.01
-    limit: 10
+    amount: 20
+    rsi_buy: 30
+    rsi_sell: 70
+    rsi_limit: 14
+    rsi_interval: "15m"
+  - symbol: "ETH/USDT"
+    interval: "10s"
+    amount: 0 # set zero to test the logic.
+    rsi_buy: 30
+    rsi_sell: 70
+    rsi_limit: 14
+    rsi_interval: "15m"
