@@ -172,6 +172,7 @@ func (me *Bot) welcomeMessage(config config.Config) string {
 	for i, trade := range config.Trades {
 		msg += fmt.Sprintf("> *%d: %s*\n", i+1, trade.Symbol)
 		msg += fmt.Sprintf("> *Interval:* %s\n", trade.Interval)
+		msg += fmt.Sprintf("> *Amount:* %.5f\n", trade.Amount)
 		msg += fmt.Sprintf("> *Buy when RSI is below:* %.2f\n", trade.RSIBuy)
 		msg += fmt.Sprintf("> *Sell when RSI is upper:* %.2f\n", trade.RSISell)
 		msg += fmt.Sprintf("> *Interval RSI is:* %s\n", trade.RSIInterval)
