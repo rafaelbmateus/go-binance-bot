@@ -58,8 +58,7 @@ func (me *Bot) Watchdog(trade config.Trade) {
 
 // Monitor symbol to buy or sell.
 func (me *Bot) Monitor(trade config.Trade) error {
-	price, err := me.Binance.SymbolPrice(
-		fmt.Sprintf("%s%s", trade.GetSymbol(), trade.BuyWith()), trade.RSIInterval)
+	price, err := me.Binance.SymbolPrice(trade.GetAsset(), trade.RSIInterval)
 	if err != nil {
 		return err
 	}
@@ -69,7 +68,8 @@ func (me *Bot) Monitor(trade config.Trade) error {
 		return err
 	}
 
-	me.Log.Info().Msgf("[%s] price=%.5f rsi=%.2f", trade.Symbol, price, rsi)
+	me.Log.Info().Msgf("[%s] amount=%.5f price=%.5f rsi=%.2f",
+		trade.Symbol, trade.Amount, price, rsi)
 
 	if rsi <= trade.RSIBuy {
 		if trade.Amount == 0 {
@@ -124,7 +124,7 @@ func (me *Bot) buy(trade config.Trade, price float64) error {
 	}
 
 	if wallet >= trade.Amount {
-		// me.Log.Debug().Msgf("[%s] already bought", trade.Symbol)
+		me.Log.Debug().Msgf("[%s] already bought, %.5f on wallet", trade.Symbol, wallet)
 		return nil
 	}
 
@@ -149,12 +149,12 @@ func (me *Bot) sell(trade config.Trade, price float64) error {
 	}
 
 	if wallet < trade.Amount {
-		// me.Log.Debug().Msgf("[%s] don't have enough to sell", trade.Symbol)
+		me.Log.Debug().Msgf("[%s] don't have enough to sell, %.5f on wallet", trade.Symbol, wallet)
 		return nil
 	}
 
 	order, err := me.Binance.CreateOrder(trade.GetSymbol(),
-		trade.BuyWith(), "SELL", wallet, price)
+		trade.BuyWith(), "SELL", trade.Amount, price)
 	if err != nil {
 		return err
 	}

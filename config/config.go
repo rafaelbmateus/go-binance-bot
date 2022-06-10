@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -23,6 +24,10 @@ type Trade struct {
 	RSISell     float64       `yaml:"rsi_sell"`
 	RSILimit    int           `yaml:"rsi_limit"`
 	RSIInterval string        `yaml:"rsi_interval"`
+}
+
+func (s *Trade) GetAsset() string {
+	return fmt.Sprintf("%s%s", s.GetSymbol(), s.BuyWith())
 }
 
 // GetSymbol split to get symbol that want to buy.
