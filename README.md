@@ -11,64 +11,83 @@ Simple like:
 Fist, you need a binance api credentials.
 
 If you don't have a binance api read
-(https://www.binance.com/pt-BR/support/faq/360002502072)[How to create binance api]
+[How to create binance api](https://www.binance.com/pt-BR/support/faq/360002502072).
 
-Save your secrets in a safe place then we will put it in the `.env`
+Save your secrets in a safe place then we will put it in the `.env`.
 
-## Bot Config
+# How to run?
+
+To run the bot on your computer you need to have
+[docker](https://docker.com) and [compose](https://docs.docker.com/compose) installed.
+
+Make sure you created the `.env` and `config.yaml` files:
+
+```console
+cp config-example.yaml config.yaml
+cp example.env .env
+```
+
+## Config file
 
 The bot configuration is provided by yaml file that
-has the following trade parameters.
+has the following trade parameters `config.yaml`.
 In this file, put the symbol price you want to buy and sell.
 
 ```yaml
-name: "My binance bot"
+name: "go-binance-bot"
+
 trades:
   - symbol: "BTC/USDT"
-    interval: "1m"
-    buyPrice: 34322.0
-    sellPrice: 50640.0
+    interval: "10s"
+    amount: 0.0004
+    rsi_buy: 30
+    rsi_sell: 70
+    rsi_limit: 14
+    rsi_interval: "15m"
+  - symbol: "BNB/USDT"
+    interval: "10s"
+    amount: 0.05
+    rsi_buy: 30
+    rsi_sell: 70
+    rsi_limit: 14
+    rsi_interval: "15m"
   - symbol: "LOKA/USDT"
-    interval: "30s"
-    buyPrice: 1.51
-    sellPrice: 3.08
+    interval: "10s"
+    amount: 20
+    rsi_buy: 30
+    rsi_sell: 70
+    rsi_limit: 14
+    rsi_interval: "15m"
+  - symbol: "ETH/USDT"
+    interval: "10s"
+    amount: 0 # set zero to test the logic.
+    rsi_buy: 30
+    rsi_sell: 70
+    rsi_limit: 14
+    rsi_interval: "15m"
 ```
 
 * symbol: Symbol name to trade - `string`
 * interval: Interval to the next trade - `time.Duration`
 * buyPrice: Create a buy order when the price is below - `float64`
 * sellPrice: Create a sell order when the price is high - `float64`
+* limit: Limit of USDT that will negotiate - `float64`
 
-# How to run?
+## Env file
 
-To run the bot on your computer, you need to have docker and compose installed.
+Change your environment vars in `.env` file
+with your binance api credentials.
 
-First, create a `.env` file in root folder with your binance api:
-
-```console
-BINANCE_API_KEY=<YOUR_API_KEY_HERE>
-BINANCE_API_SECRET=<YOUR_API_SECRET_HERE>
-SLACK_WEBHOOK_URL=<YOUR_SLACK_WEBHOOK_URL_HERE>
+```
+BINANCE_API_KEY=xXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX
+BINANCE_API_SECRET=xXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX
+SLACK_WEBHOOK_URL=https://hooks.slack.com/services/ABABABABA/BABABABABAB/BLABLABLABLABLABLABLABLA
 ```
 
-See the project structure to know where to put the `.env` file with your keys:
+## Running the bot
 
-```console
-├── binance/
-├── bot/
-├── build/
-├── config/
-├── notify/
-├── .env  <-----  # put your env file here!
-├── config.yaml
-├── go.mod
-├── go.sum
-├── main.go
-├── Makefile
-└── README.md
-```
-
-Finally to run the project, exec:
+Finally start the containers to monitor
+the coins and open buy or sell order:
 
 ```console
 make up logs
@@ -82,8 +101,21 @@ app_1  | {"level":"debug","time":"2022-03-28T13:19:35Z","message":"time to SELL 
 ...
 ```
 
-To stop the bot and remove container, exec:
+To stop the bot and remove container, execute:
 
 ```console
 make clean
 ```
+
+## 📫 Contributing
+
+To contribute to the project, follow these steps:
+
+1. Clone the repository: `git clone git@github.com:rafaelbmateus/go-binance-bot.git`
+2. Create a feature branch: `git switch -c feature-a`
+3. Make changes and confirm (try using [conventional commits](https://www.conventionalcommits.org)): `git commit -m 'feat: new bot feature'`
+4. Push the feature branch: `git push origin feature-a`
+5. Create a [pull request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request)
+6. Get reviews from other users
+7. Merge to `main` branch (we encourage using commit squash)
+8. Remove the branch merged.
