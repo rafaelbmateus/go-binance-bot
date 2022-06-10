@@ -24,6 +24,7 @@ var (
 		RSIBuy:      40,
 		RSISell:     60,
 		RSIInterval: "5m",
+		RSILimit:    14,
 	}
 )
 
