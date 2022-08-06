@@ -7,8 +7,6 @@ services:
       context: ../
       dockerfile: build/Dockerfile
     restart: on-failure
-    env_file:
-      - ./../.env
     environment:
       CGO_ENABLED: "0"
       GOOS: "linux"
