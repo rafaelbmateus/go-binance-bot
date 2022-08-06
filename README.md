@@ -6,6 +6,12 @@ Basically you run the container and let the bot working for you.
 Simple like:
 > Buy when it's cheap! And sell when it's expensive.
 
+## Logic
+
+The intelligence of this bot use 
+[Relative Strength Index (RSI)](https://www.tradingview.com/ideas/relativestrengthindex/)
+to buy and sell automatically.
+
 ## Binance API
 
 Fist, you need a binance api credentials.
@@ -13,18 +19,15 @@ Fist, you need a binance api credentials.
 If you don't have a binance api read
 [How to create binance api](https://www.binance.com/pt-BR/support/faq/360002502072).
 
-Save your secrets in a safe place then we will put it in the `.env`.
-
 # How to run?
 
 To run the bot on your computer you need to have
 [docker](https://docker.com) and [compose](https://docs.docker.com/compose) installed.
 
-Make sure you created the `.env` and `config.yaml` files:
+Make sure you created the `config.yaml` files:
 
 ```console
 cp config-example.yaml config.yaml
-cp example.env .env
 ```
 
 ## Config file
@@ -35,6 +38,13 @@ In this file, put the symbol price you want to buy and sell.
 
 ```yaml
 name: "go-binance-bot"
+
+binance:
+  api_key: "xXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX"
+  api_secret: "xXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX"
+
+notify:
+  webhook_url: "https://hooks.slack.com/services/ABABABABA/BABABABABAB/BLABLABLABLABLABLABLABLA"
 
 trades:
   - symbol: "BTC/USDT"
@@ -69,20 +79,11 @@ trades:
 
 * symbol: Symbol name to trade - `string`
 * interval: Interval to the next trade - `time.Duration`
-* buyPrice: Create a buy order when the price is below - `float64`
-* sellPrice: Create a sell order when the price is high - `float64`
+* rsiBuy: When the rsi is below - `float64`
+* rsiSell: When the rsi is high - `float64`
+* rsiLimit: Quantity of registers to analize - `int`
+* rsi_interval: Interval of time to group of registers - `time.Duration`
 * limit: Limit of USDT that will negotiate - `float64`
-
-## Env file
-
-Change your environment vars in `.env` file
-with your binance api credentials.
-
-```
-BINANCE_API_KEY=xXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX
-BINANCE_API_SECRET=xXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX
-SLACK_WEBHOOK_URL=https://hooks.slack.com/services/ABABABABA/BABABABABAB/BLABLABLABLABLABLABLABLA
-```
 
 ## Running the bot
 
