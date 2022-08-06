@@ -1,6 +1,6 @@
 module github.com/rafaelbmateus/binance-bot
 
-go 1.17
+go 1.19
 
 require (
 	github.com/adshao/go-binance/v2 v2.3.5
