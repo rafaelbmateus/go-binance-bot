@@ -11,8 +11,19 @@ import (
 )
 
 type Config struct {
-	Name   string  `yaml:"name"`
-	Trades []Trade `yaml:"trades"`
+	Name    string  `yaml:"name"`
+	Binance Binance `yaml:"binance"`
+	Notify  Notify  `yaml:"notify"`
+	Trades  []Trade `yaml:"trades"`
+}
+
+type Binance struct {
+	ApiKey    string `yaml:"api_key"`
+	ApiSecret string `yaml:"api_secret"`
+}
+
+type Notify struct {
+	WebhookURL string `yaml:"webhook_url"`
 }
 
 type Trade struct {

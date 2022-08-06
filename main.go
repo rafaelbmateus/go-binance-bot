@@ -12,17 +12,12 @@ import (
 	"github.com/rs/zerolog"
 )
 
-var (
-	Version = "no version provided"
-	Commit  = "no commit hash provided"
-)
-
 func main() {
 	ctx := context.Background()
 
 	log := zerolog.New(os.Stdout).With().Timestamp().Logger()
 	log.Level(zerolog.InfoLevel)
-	log.Info().Msgf("starting with version %s and commit %s", Version, Commit)
+	log.Debug().Msgf("service starging...")
 
 	cfg, err := config.Load("config.yaml")
 	if err != nil {
@@ -30,11 +25,9 @@ func main() {
 		return
 	}
 
-	apiKey := os.Getenv("BINANCE_API_KEY")
-	apiSecret := os.Getenv("BINANCE_API_SECRET")
-	webhook := os.Getenv("SLACK_WEBHOOK_URL")
-	binance := binance.NewBinance(&log, &ctx, sdk.NewClient(apiKey, apiSecret))
-	notify := notify.NewSlackNotify(cfg.Name, webhook)
+	binance := binance.NewBinance(&log, &ctx,
+		sdk.NewClient(cfg.Binance.ApiKey, cfg.Binance.ApiSecret))
+	notify := notify.NewSlackNotify(cfg.Name, cfg.Notify.WebhookURL)
 	bot := bot.NewBot(&log, &ctx, binance, cfg, notify)
 	bot.Run()
 

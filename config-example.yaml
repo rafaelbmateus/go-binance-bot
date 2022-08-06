@@ -1,5 +1,12 @@
 name: "go-binance-bot"
 
+binance:
+  api_key: "xXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX"
+  api_secret: "xXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX"
+
+notify:
+  webhook_url: "https://hooks.slack.com/services/ABABABABA/BABABABABAB/BLABLABLABLABLABLABLABLA"
+
 trades:
   - symbol: "BTC/USDT"
     interval: "10s"
